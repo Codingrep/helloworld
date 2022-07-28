@@ -1,0 +1,1 @@
+docker run --rm -v "%cd%:/usr/src/mymaven" -v "%HOMEDRIVE%%HOMEPATH%\.m2:/root/.m2" -w /usr/src/mymaven sonar-scanner-cli:4.6-custom27 ./mvnw sonar:sonar

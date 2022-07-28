@@ -1,0 +1,34 @@
+pipeline{
+    agent{
+        kubernetes{
+            cloud 'prod-ucp-ca--stage-devops-jenkinsweb-ns'
+            yamlFile 'KubernetesPod.yaml'
+            label 'jenkins-web-agent'
+        }
+    }
+    stages{
+        stage("Checkout"){
+            steps{
+                git branch: 'develop', credentialsId: 'gitget-ssh', url: 'ssh://git@bitbucket.sunlifecorp.com/web_apps/web-apps-helloworld.git'
+            }
+        }
+
+        stage("Build"){
+            steps{
+                container('maven'){
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
+        stage("Static Code Analysis"){
+            steps{
+                withSonarQubeEnv('SonarQube Stage'){
+                    container('maven'){
+                        sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+                    }
+                }
+            }
+        }
+    }
+}

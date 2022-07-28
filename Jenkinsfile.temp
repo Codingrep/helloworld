@@ -1,0 +1,16 @@
+library identifier: 'maven-lib@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'ssh://git@bitbucket.sunlifecorp.com/~ga95/maven_shared_lib.git',
+   credentialsId: 'e1b989a8-616a-4b20-8b64-47c409cbccb6'])
+
+build_maven{
+    agentLabel = "winbuild||linbuild"
+    jdkVersion = 'JDK 1.8'
+    mavenVersion = 'Maven 3.3.9'
+    mavenGoal = 'clean install'
+    mavenProperty = ''
+    mavenOption = ''
+    deployment = 'true'
+    deploymentApplicationName = 'web-apps-helloworld'
+    deploymentBranch = '^(develop|release)'
+}

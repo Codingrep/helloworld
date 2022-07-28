@@ -1,0 +1,45 @@
+metadata:
+  labels:
+    app: web-apps-helloworld
+  annotations: {
+    ca.broadcom.com/autoattach.enabled: false
+  }
+spec:
+  containers:
+  - name: jnlp
+    image: prod-dtr-ca.sunlifecorp.com/devopstoolchain/jenkins-inbound-agent:4.7-1-alpine
+    imagePullPolicy: "Always"
+    tty: true
+    workingDir: /home/jenkins/agent
+    resources:
+      requests:
+        memory: "400Mi"
+        cpu: "125m"
+      limits:
+        memory: "800Mi"
+        cpu: "250m"
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
+
+  - name: maven
+    image: prod-dtr-ca.sunlifecorp.com/devopstoolchain/maven-grs-admin:1.0.0
+    imagePullPolicy: "Always"
+    command:
+    - cat
+    tty: true
+    workingDir: /workspace
+    resources:
+      requests:
+        memory: "1.5Gi"
+        cpu: "750m"
+      limits:
+        memory: "3Gi"
+        cpu: "1500m"
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /workspace
+
+volumes:
+  - name: workspace-volume
+    emptyDir: { }
