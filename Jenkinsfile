@@ -1,7 +1,5 @@
 pipeline {
-     agent {
-        docker { image 'deepanshuc33/centos' }
-    }
+     agent any
     stages {
         stage('Example') {
             steps {
